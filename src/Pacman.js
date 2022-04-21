@@ -55,9 +55,14 @@ export default class Pacman{
     move(){
         if (this.currentDirection !== this.requestDirection) {
             if (Number.isInteger(this.row / this.tileSize) && Number.isInteger(this.column / this.tileSize)) {
-                this.currentDirection = this.requestDirection;
+                if (this.isBorder() === false) {
+                    this.currentDirection = this.requestDirection;
+                }
             }
         }
+
+        if (this.isBorder()){return;}
+
         switch (this.currentDirection){
             case this.movingDirection.up:
                 this.row -= 1;
@@ -115,5 +120,29 @@ export default class Pacman{
             }
         }
 
+    }
+
+    isBorder(){
+        if (this.currentDirection === this.movingDirection.up){
+            let rowCopy = this.row;
+            while (Number.isInteger(rowCopy / this.tileSize) === false){rowCopy--;}
+            if (this.tileMap[rowCopy / this.tileSize][this.column / this.tileSize] === 1){return true}
+        }
+        if (this.currentDirection === this.movingDirection.down){
+            let rowCopy = this.row;
+            while (Number.isInteger(rowCopy / this.tileSize) === false){rowCopy++;}
+            if (this.tileMap[rowCopy / this.tileSize][this.column / this.tileSize] === 1){return true}
+        }
+        if (this.currentDirection === this.movingDirection.left){
+            let columnCopy = this.column;
+            while (Number.isInteger(columnCopy / this.tileSize) === false){columnCopy--;}
+            if (this.tileMap[this.row / this.tileSize][columnCopy / this.tileSize] === 1){return true}
+        }
+        if (this.currentDirection === this.movingDirection.right){
+            let columnCopy = this.column;
+            while (Number.isInteger(columnCopy / this.tileSize) === false){columnCopy++;}
+            if (this.tileMap[this.row / this.tileSize][columnCopy / this.tileSize] === 1){return true}
+        }
+        else {return false}
     }
 }
