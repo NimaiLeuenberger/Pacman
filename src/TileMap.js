@@ -9,6 +9,14 @@ export default class TileMap {
 
         this.wall = new Image();
         this.wall.src = "../images/wall.png";
+
+
+        this.movingDirection = {
+            up: 0,
+            down: 1,
+            left: 2,
+            right: 3
+        };
     }
 
     map = [
