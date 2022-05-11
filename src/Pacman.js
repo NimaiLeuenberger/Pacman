@@ -55,16 +55,15 @@ export default class Pacman{
     move(){
         if (this.currentDirection !== this.requestDirection) {
             console.log("current direction: " + this.currentDirection + " requested direction: " + this.requestDirection);
-            //console.log("row " + this.row + " column " + this.column);
-            if (Number.isInteger(this.row / this.tileSize) && Number.isInteger(this.column / this.tileSize)) {
+            if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)) {
                 console.log("is integer");
                 if (this.isBorder(this.row, this.column, this.requestDirection) === false) {
                     this.currentDirection = this.requestDirection;
-                    console.log("isn't border " + this.currentDirection + " " + this.requestDirection);
+                    console.log("isn't border " + this.currentDirection + " " + this.currentDirection);
                 }
             }
         }
-        if (this.isBorder(this.row, this.column, this.requestDirection) === true){return;}
+        if (this.isBorder(this.row, this.column, this.currentDirection) === true){return;}
 
         switch (this.currentDirection){
             case this.movingDirection.up:
@@ -83,6 +82,10 @@ export default class Pacman{
                 this.column += 1;
                 this.pacRotation = 0;
                 break;
+        }
+
+        if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)){
+            this.tileMap[this.row / this.tileSize][this.column / this.tileSize] = 2;
         }
     }
 
