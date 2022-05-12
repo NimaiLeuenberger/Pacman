@@ -28,8 +28,6 @@ export default class TileMap {
         this.yellowGhost = new Image();
         this.yellowGhost.src = "../images/yellowGhost.png";
 
-        this.ghosts = [this.blueGhost, this.pinkGhost, this.redGhost, this.yellowGhost];
-
         this.movingDirection = {
             up: 0,
             down: 1,
@@ -41,8 +39,8 @@ export default class TileMap {
     map = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -76,7 +74,13 @@ export default class TileMap {
                 } else if (tile === 3){
                     ctx.drawImage(this.pinkDot, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
                 } else if (tile === 5){
-                    //draw ghosts
+                    ctx.drawImage(this.blueGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+                } else if (tile === 6){
+                    ctx.drawImage(this.pinkGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+                } else if (tile === 7){
+                    ctx.drawImage(this.redGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+                } else if (tile === 8){
+                    ctx.drawImage(this.yellowGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
                 }
             }
         }
@@ -87,7 +91,7 @@ export default class TileMap {
             for (let column = 0; column < this.map[row].length; column++) {
                 let tile = this.map[row][column];
                 if (tile === 4){
-                    this.map[row][column] = 0;
+                    this.map[row][column] = 2;
                     return new Pacman(column*this.tileSize, row*this.tileSize, this.tileSize, this.map);
                 }
             }
