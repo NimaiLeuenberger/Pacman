@@ -1,4 +1,5 @@
 import Pacman from "./Pacman.js";
+import Ghost from "./Ghost.js";
 
 export default class TileMap {
     constructor(tileSize) {
@@ -16,18 +17,6 @@ export default class TileMap {
         this.black = new Image();
         this.black.src = "../images/black.png";
 
-        this.blueGhost = new Image();
-        this.blueGhost.src = "../images/blueGhost.png";
-
-        this.pinkGhost = new Image();
-        this.pinkGhost.src = "../images/pinkGhost.png";
-
-        this.redGhost = new Image();
-        this.redGhost.src = "../images/redGhost.png";
-
-        this.yellowGhost = new Image();
-        this.yellowGhost.src = "../images/yellowGhost.png";
-
         this.movingDirection = {
             up: 0,
             down: 1,
@@ -42,19 +31,19 @@ export default class TileMap {
         [1, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
@@ -73,14 +62,6 @@ export default class TileMap {
                     ctx.drawImage(this.black, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
                 } else if (tile === 3){
                     ctx.drawImage(this.pinkDot, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-                } else if (tile === 5){
-                    ctx.drawImage(this.blueGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-                } else if (tile === 6){
-                    ctx.drawImage(this.pinkGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-                } else if (tile === 7){
-                    ctx.drawImage(this.redGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-                } else if (tile === 8){
-                    ctx.drawImage(this.yellowGhost, column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
                 }
             }
         }
@@ -96,6 +77,20 @@ export default class TileMap {
                 }
             }
         }
+    }
+
+    getGhost(){
+        let ghosts = [];
+        for (let row = 0; row < this.map.length; row++) {
+            for (let column = 0; column < this.map[row].length; column++) {
+                let tile = this.map[row][column];
+                if (tile === 5 || tile === 6 || tile === 7 || tile === 8){
+                    this.map[row][column] = 0;
+                    ghosts[tile-5] = new Ghost(column*this.tileSize, row*this.tileSize, this.tileSize, this.map, tile-5);
+                }
+            }
+        }
+        return ghosts;
     }
 
     setCanvasSize(canvas) {
