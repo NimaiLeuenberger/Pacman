@@ -36,30 +36,35 @@ export default class Pacman{
         this.requestDirection = null;
 
         this.pacRotation = 0;
+
+        this.stop = false;
     }
 
-    draw(ctx){
-        this.move();
-        this.animation();
+    draw(ctx, pause){
+            if (pause === false){
+                this.move();
+                this.animation();
+            }
 
-        const size = this.tileSize / 2;
-        ctx.save();
-        ctx.translate(this.column + size, this.row + size);
-        // Verschiebt alles, was nach dem Aufrufen von translate gezeichnet wird, um die angegebenen Koordinaten.
-        // Dies bedeutet, dass allen folgenden x-Koordinaten der Wert tx bzw. allen y-Koordinaten ty hinzuaddiert wird.
-        ctx.rotate((this.pacRotation * 90 * Math.PI) / 180);
-        ctx.drawImage(this.pacImgs[this.pacIndex], -size, -size, this.tileSize, this.tileSize);
-        ctx.restore();
+            const size = this.tileSize / 2;
+            ctx.save();
+            ctx.translate(this.column + size, this.row + size);
+            // Verschiebt alles, was nach dem Aufrufen von translate gezeichnet wird, um die angegebenen Koordinaten.
+            // Dies bedeutet, dass allen folgenden x-Koordinaten der Wert tx bzw. allen y-Koordinaten ty hinzuaddiert wird.
+            ctx.rotate((this.pacRotation * 90 * Math.PI) / 180);
+            ctx.drawImage(this.pacImgs[this.pacIndex], -size, -size, this.tileSize, this.tileSize);
+            ctx.restore();
+
     }
 
     move(){
         if (this.currentDirection !== this.requestDirection) {
-            console.log("current direction: " + this.currentDirection + " requested direction: " + this.requestDirection);
+            //console.log("current direction: " + this.currentDirection + " requested direction: " + this.requestDirection);
             if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)) {
-                console.log("is integer");
+                //console.log("is integer");
                 if (this.isBorder(this.row, this.column, this.requestDirection) === false) {
                     this.currentDirection = this.requestDirection;
-                    console.log("isn't border " + this.currentDirection + " " + this.currentDirection);
+                    //console.log("isn't border " + this.currentDirection + " " + this.currentDirection);
                 }
             }
         }
@@ -152,14 +157,19 @@ export default class Pacman{
                 break;
         }
         isInteger = this.rowColIsInteger(rowCopy, columnCopy);
-        console.log("row: " + rowCopy + " column: " + columnCopy + " " + isInteger);
+        //console.log("row: " + rowCopy + " column: " + columnCopy + " " + isInteger);
         if (isInteger === false){
             return;
         }
         if (isInteger === true){
             isInteger = false;
-            console.log(this.tileMap[rowCopy][columnCopy]);
+            //console.log(this.tileMap[rowCopy][columnCopy]);
             const tile = this.tileMap[rowCopy][columnCopy];
+            if (tile === 5 || tile === 6 || tile === 7 || tile === 8){
+                this.stop = true;
+                console.log("true");
+                return;
+            }
             return tile === 1;
         }
     }

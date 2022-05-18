@@ -36,9 +36,11 @@ export default class Ghost{
         this.directionTimer = 20;
     }
 
-    draw(ctx){
-        this.move();
-        this.direction();
+    draw(ctx, pause){
+        if (pause === false) {
+            this.move();
+            this.direction();
+        }
 
         ctx.drawImage(this.ghosts[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
         /*if (!(this.tileMap[this.row / this.tileSize][this.column / this.tileSize] === 2)) {
@@ -48,12 +50,12 @@ export default class Ghost{
 
     move(){
         if (this.currentDirection !== this.requestDirection) {
-            console.log("current direction: " + this.currentDirection + " requested direction: " + this.requestDirection);
+            //console.log("current direction: " + this.currentDirection + " requested direction: " + this.requestDirection);
             if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)) {
-                console.log("is integer");
+                //console.log("is integer");
                 if (this.isBorder(this.row, this.column, this.requestDirection) === false) {
                     this.currentDirection = this.requestDirection;
-                    console.log("isn't border " + this.currentDirection + " " + this.currentDirection);
+                    //console.log("isn't border " + this.currentDirection + " " + this.currentDirection);
                 }
             }
         }
@@ -99,13 +101,13 @@ export default class Ghost{
                 break;
         }
         isInteger = this.rowColIsInteger(rowCopy, columnCopy);
-        console.log("row: " + rowCopy + " column: " + columnCopy + " " + isInteger);
+        //console.log("row: " + rowCopy + " column: " + columnCopy + " " + isInteger);
         if (isInteger === false){
             return;
         }
         if (isInteger === true){
             isInteger = false;
-            console.log(this.tileMap[rowCopy][columnCopy]);
+            //console.log(this.tileMap[rowCopy][columnCopy]);
             const tile = this.tileMap[rowCopy][columnCopy];
             return tile === 1 || tile === 4;
         }
@@ -134,6 +136,20 @@ export default class Ghost{
                     this.requestDirection = this.movingDirection.right;
                     break;
             }
+        }
+    }
+
+    collideWith(pacman){
+        if (
+            this.row + this.tileSize > pacman.row &&
+            this.row < pacman.row + this.tileSize &&
+            this.column + this.tileSize > pacman.column &&
+            this.column < pacman.column + this.tileSize
+        ){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
