@@ -79,14 +79,14 @@ export default class TileMap {
         }
     }
 
-    getGhost(){
+    getGhost() {
         let ghosts = [];
         for (let row = 0; row < this.map.length; row++) {
             for (let column = 0; column < this.map[row].length; column++) {
                 let tile = this.map[row][column];
-                if (tile === 5 || tile === 6 || tile === 7 || tile === 8){
+                if (tile === 5 || tile === 6 || tile === 7 || tile === 8) {
                     this.map[row][column] = 0;
-                    ghosts[tile-5] = new Ghost(column*this.tileSize, row*this.tileSize, this.tileSize, this.map, tile-5);
+                    ghosts[tile - 5] = new Ghost(column * this.tileSize, row * this.tileSize, this.tileSize, this.map, tile - 5);
                 }
             }
         }

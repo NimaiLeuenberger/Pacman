@@ -38,6 +38,8 @@ export default class Pacman{
         this.pacRotation = 0;
 
         this.stop = false;
+
+        this.pinkDotActive = false;
     }
 
     draw(ctx, pause){
@@ -59,12 +61,9 @@ export default class Pacman{
 
     move(){
         if (this.currentDirection !== this.requestDirection) {
-            //console.log("current direction: " + this.currentDirection + " requested direction: " + this.requestDirection);
             if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)) {
-                //console.log("is integer");
                 if (this.isBorder(this.row, this.column, this.requestDirection) === false) {
                     this.currentDirection = this.requestDirection;
-                    //console.log("isn't border " + this.currentDirection + " " + this.currentDirection);
                 }
             }
         }
@@ -90,6 +89,9 @@ export default class Pacman{
         }
 
         if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)){
+            if (this.tileMap[this.row / this.tileSize][this.column / this.tileSize] === 3){
+                this.eatPinkDot();
+            }
             this.tileMap[this.row / this.tileSize][this.column / this.tileSize] = 2;
         }
     }
@@ -157,25 +159,27 @@ export default class Pacman{
                 break;
         }
         isInteger = this.rowColIsInteger(rowCopy, columnCopy);
-        //console.log("row: " + rowCopy + " column: " + columnCopy + " " + isInteger);
         if (isInteger === false){
             return;
         }
         if (isInteger === true){
             isInteger = false;
-            //console.log(this.tileMap[rowCopy][columnCopy]);
             const tile = this.tileMap[rowCopy][columnCopy];
-            if (tile === 5 || tile === 6 || tile === 7 || tile === 8){
-                this.stop = true;
-                console.log("true");
-                return;
-            }
             return tile === 1;
         }
     }
 
     rowColIsInteger(row, column){
         return Number.isInteger(column) === true && Number.isInteger(row) === true;
+    }
+
+    eatPinkDot(){
+        this.pinkDotActive = true;
+        console.log("pink dot active: " + this.pinkDotActive);
+        this.pinkDotTimer = setTimeout(function (){
+            this.pinkDotActive = false;
+            console.log("pink dot active: " + this.pinkDotActive);
+        }, 12000);
     }
 }
 
