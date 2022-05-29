@@ -37,6 +37,8 @@ export default class Ghost{
         this.requestDirection = null;
 
         this.directionTimer = 20;
+
+        this.ghostAnimationTimer = 25;
     }
 
     draw(ctx, pause, pacman){
@@ -44,7 +46,6 @@ export default class Ghost{
             this.move();
             this.direction();
         }
-
         this.setGhostImages(pacman, ctx);
     }
 
@@ -154,13 +155,52 @@ export default class Ghost{
     }
 
     setGhostImages(pacman, ctx) {
+        /*this.ghostScared = false;
         if (!pacman.pinkDotActive) {
-            for (let i = 0; i < 4; i++) {
+            ctx.drawImage(this.ghostImgs[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
+        }
+        if (pacman.pinkDotActive){
+            this.ghostScared = true;
+            if (pacman.pinkDotSoonInactive){
+                this.ghostAnimationTimer--;
+                if (this.ghostAnimationTimer === 0){
+                    this.ghostAnimationTimer = 60;
+                    if (this.ghostScared){
+                        this.ghostScared = false
+                    }  else {
+                        this.ghostScared = true;
+                    }
+                }
+            }
+            else if (this.ghostScared){
+                ctx.drawImage(this.ghostImgs[4], this.column, this.row, this.tileSize, this.tileSize);
+            }
+            else if (!this.ghostScared){
                 ctx.drawImage(this.ghostImgs[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
             }
         }
-        if (pacman.pinkDotActive){
+
+        */
+        if (!pacman.pinkDotActive) {
+            this.ghostScared = false;
+        } else if (pacman.pinkDotSoonInactive){
+            this.ghostAnimationTimer--;
+            if (this.ghostAnimationTimer === 0){
+                this.ghostAnimationTimer = 25;
+                if (this.ghostScared){
+                    this.ghostScared = false
+                }  else {
+                    this.ghostScared = true;
+                }
+            }
+        } else if (pacman.pinkDotActive){
+            this.ghostScared = true;
+        }
+        if (this.ghostScared){
             ctx.drawImage(this.ghostImgs[4], this.column, this.row, this.tileSize, this.tileSize);
+        }
+        if (!this.ghostScared){
+            ctx.drawImage(this.ghostImgs[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
         }
     }
 }

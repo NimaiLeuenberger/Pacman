@@ -38,14 +38,21 @@ export default class Pacman{
         this.pacRotation = 0;
 
         this.pinkDotActive = false;
+
+        this.pinkDotSoonInactive = false;
+
+        this.pointsCntr = 0;
+
+        this.eatingGhost = false;
     }
 
-    draw(ctx, pause, ghosts){
+    draw(ctx, pause, ghosts, points){
             if (!pause){
                 this.move();
                 this.animation();
             }
             this.eatGhost(ghosts);
+            points.innerHTML = this.pointsCntr.toString();
 
             const size = this.tileSize / 2;
             ctx.save();
@@ -89,6 +96,9 @@ export default class Pacman{
         if (this.rowColIsInteger(this.row / this.tileSize, this.column / this.tileSize)){
             if (this.tileMap[this.row / this.tileSize][this.column / this.tileSize] === 3){
                 this.eatPinkDot();
+                this.pointsCntr += 50;
+            } else {
+                this.pointsCntr += 10;
             }
             this.tileMap[this.row / this.tileSize][this.column / this.tileSize] = 2;
         }
@@ -130,7 +140,6 @@ export default class Pacman{
                 this.pacIndex = 0;
             }
         }
-
     }
 
     isBorder(row, column, direction){
@@ -173,18 +182,30 @@ export default class Pacman{
 
     eatPinkDot(){
         this.pinkDotActive = true;
-        console.log("pink dot active: " + this.pinkDotActive);
         this.pinkDotTimer = setTimeout(() => {
             this.pinkDotActive = false;
+            this.pinkDotSoonInactive = false;
+            console.log(this.pinkDotSoonInactive);
         }, 12000);
-        console.log("pink dot active: " + this.pinkDotActive);
+        this.pinkDotTimer = setTimeout(() => {
+            this.pinkDotSoonInactive = true;
+            console.log(this.pinkDotSoonInactive);
+        }, 9000);
+        console.log(this.pinkDotSoonInactive);
     }
 
     eatGhost(ghosts){
         if (this.pinkDotActive){
             // it filters the array "ghosts" and saves the ghost that collided with pacman in the const
-            const stillAliveGhosts = ghosts.filter((ghost) => ghost.collideWith(this));
-            stillAliveGhosts.forEach((ghost) => ghosts.splice(ghosts.indexOf(ghost), 1));
+            const collideGhosts = ghosts.filter((ghost) => ghost.collideWith(this));
+            collideGhosts.forEach((ghost) => ghosts.splice(ghosts.indexOf(ghost), 1));
+            collideGhosts.forEach((ghost) => {
+                if (ghost != null){
+                    this.pointsCntr += 200;
+                    this.eatingGhost = true;
+                    this.eatingGhostTimer = setTimeout(() => {this.eatingGhost = false}, 1000);
+                }
+            });
         }
     }
 }

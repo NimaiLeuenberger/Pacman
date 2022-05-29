@@ -17,6 +17,9 @@ export default class TileMap {
         this.black = new Image();
         this.black.src = "../images/black.png";
 
+        this.twoHundred = new Image();
+        this.twoHundred.src = "../images/200.png";
+
         this.movingDirection = {
             up: 0,
             down: 1,
@@ -47,7 +50,6 @@ export default class TileMap {
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
-
 
     draw(ctx) {
         for (let row = 0; row < this.map.length; row++) {

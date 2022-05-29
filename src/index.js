@@ -6,10 +6,11 @@ const tileSize = 32;
 const tileMap = new TileMap(tileSize);
 const pacman = tileMap.getPacman();
 const ghosts = tileMap.getGhost();
+const points = document.getElementById("points");
 
 function game(){
     tileMap.draw(ctx);
-    pacman.draw(ctx, pause(), ghosts);
+    pacman.draw(ctx, pause(), ghosts, points);
     ghosts.forEach((ghost) => ghost.draw(ctx, pause(), pacman));
     isGameOver();
     isGameWon();
@@ -17,7 +18,7 @@ function game(){
 }
 
 function pause(){
-    return isGameOver() === true;
+    return isGameOver() === true || pacman.eatingGhost === true;
 }
 
 function isGameOver(){
@@ -45,7 +46,22 @@ function drawGameOver(){
 }
 
 function isGameWon(){
-
+    if (!tileMap.map.some(row => row.includes(0))){
+        // rectangle:
+        ctx.rect(0, canvas.height / 2.7, canvas.width, 120);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        // border:
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+        // text:
+        ctx.font = "75px comic sans";
+        ctx.fillStyle = "yellow";
+        ctx.textAlign = "center";
+        ctx.fillText("Game Won!", canvas.width / 2, canvas.height / 2);
+        return true;
+    }
 }
 
 tileMap.setCanvasSize(canvas);
