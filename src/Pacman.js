@@ -37,16 +37,15 @@ export default class Pacman{
 
         this.pacRotation = 0;
 
-        this.stop = false;
-
         this.pinkDotActive = false;
     }
 
-    draw(ctx, pause){
-            if (pause === false){
+    draw(ctx, pause, ghosts){
+            if (!pause){
                 this.move();
                 this.animation();
             }
+            this.eatGhost(ghosts);
 
             const size = this.tileSize / 2;
             ctx.save();
@@ -56,7 +55,6 @@ export default class Pacman{
             ctx.rotate((this.pacRotation * 90 * Math.PI) / 180);
             ctx.drawImage(this.pacImgs[this.pacIndex], -size, -size, this.tileSize, this.tileSize);
             ctx.restore();
-
     }
 
     move(){
@@ -176,10 +174,18 @@ export default class Pacman{
     eatPinkDot(){
         this.pinkDotActive = true;
         console.log("pink dot active: " + this.pinkDotActive);
-        this.pinkDotTimer = setTimeout(function (){
+        this.pinkDotTimer = setTimeout(() => {
             this.pinkDotActive = false;
-            console.log("pink dot active: " + this.pinkDotActive);
         }, 12000);
+        console.log("pink dot active: " + this.pinkDotActive);
+    }
+
+    eatGhost(ghosts){
+        if (this.pinkDotActive){
+            // it filters the array "ghosts" and saves the ghost that collided with pacman in the const
+            const stillAliveGhosts = ghosts.filter((ghost) => ghost.collideWith(this));
+            stillAliveGhosts.forEach((ghost) => ghosts.splice(ghosts.indexOf(ghost), 1));
+        }
     }
 }
 

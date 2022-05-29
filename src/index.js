@@ -5,15 +5,14 @@ const ctx = canvas.getContext('2d');
 const tileSize = 32;
 const tileMap = new TileMap(tileSize);
 const pacman = tileMap.getPacman();
-const ghost = tileMap.getGhost();
+const ghosts = tileMap.getGhost();
 
 function game(){
     tileMap.draw(ctx);
-    pacman.draw(ctx, pause());
-    for (let i = 0; i < 4; i++) {
-        ghost[i].draw(ctx, pause());
-    }
+    pacman.draw(ctx, pause(), ghosts);
+    ghosts.forEach((ghost) => ghost.draw(ctx, pause(), pacman));
     isGameOver();
+    isGameWon();
     drawGameOver();
 }
 
@@ -22,7 +21,7 @@ function pause(){
 }
 
 function isGameOver(){
-    return !pacman.pinkDotActive && ghost.some(
+    return !pacman.pinkDotActive && ghosts.some(
         ghost => ghost.collideWith(pacman)
     );
 }
@@ -44,6 +43,11 @@ function drawGameOver(){
         ctx.fillText("Game Over!", canvas.width / 2, canvas.height / 2);
     }
 }
+
+function isGameWon(){
+
+}
+
 tileMap.setCanvasSize(canvas);
 // calling the game function 75 times per second (1000 ms)
 setInterval(game, 1000 / 100);

@@ -21,7 +21,10 @@ export default class Ghost{
         this.yellowGhost = new Image();
         this.yellowGhost.src = "../images/yellowGhost.png";
 
-        this.ghosts = [this.blueGhost, this.pinkGhost, this.redGhost, this.yellowGhost];
+        this.pinkDotGhost = new Image();
+        this.pinkDotGhost.src = "../images/pinkDotGhost.png";
+
+        this.ghostImgs = [this.blueGhost, this.pinkGhost, this.redGhost, this.yellowGhost, this.pinkDotGhost];
 
         this.movingDirection = {
             up: 0,
@@ -36,16 +39,13 @@ export default class Ghost{
         this.directionTimer = 20;
     }
 
-    draw(ctx, pause){
+    draw(ctx, pause, pacman){
         if (pause === false) {
             this.move();
             this.direction();
         }
 
-        ctx.drawImage(this.ghosts[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
-        /*if (!(this.tileMap[this.row / this.tileSize][this.column / this.tileSize] === 2)) {
-            ctx.drawImage(this.ghosts[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
-        }*/
+        this.setGhostImages(pacman, ctx);
     }
 
     move(){
@@ -150,6 +150,17 @@ export default class Ghost{
         }
         else {
             return false;
+        }
+    }
+
+    setGhostImages(pacman, ctx) {
+        if (!pacman.pinkDotActive) {
+            for (let i = 0; i < 4; i++) {
+                ctx.drawImage(this.ghostImgs[this.ghostNumber], this.column, this.row, this.tileSize, this.tileSize);
+            }
+        }
+        if (pacman.pinkDotActive){
+            ctx.drawImage(this.ghostImgs[4], this.column, this.row, this.tileSize, this.tileSize);
         }
     }
 }
