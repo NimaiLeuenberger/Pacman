@@ -9,6 +9,9 @@ const ghosts = tileMap.getGhost();
 const pointsHTMLElement = document.getElementById("points");
 const pacLivesHTMLElement = document.getElementById("pacLives");
 let pacLives = 2;
+const retryBtn = document.getElementById("retryBtn");
+retryBtn.style.display = "none";
+let retry = false;
 
 function game(){
     tileMap.draw(ctx);
@@ -18,7 +21,9 @@ function game(){
     ghosts.forEach((ghost) => ghost.draw(ctx, pause(), pacman));
     isGameOver();
     isGameWon();
-    drawGameOver();
+    if (!retry) {
+        drawGameOver();
+    }
 }
 
 function pause(){
@@ -30,7 +35,7 @@ function isGameOver(){
 }
 
 function pacmanHasNoLives(){
-    if (ghosts.some(ghost => ghost.collideWith(pacman))){
+    if (ghosts.some(ghost => ghost.collideWith(pacman)) && !pacman.pinkDotActive){
         if (pacLives === 0){
             return true;
         } else {
@@ -61,7 +66,32 @@ function drawGameOver(){
         ctx.fillStyle = "red";
         ctx.textAlign = "center";
         ctx.fillText("game over", canvas.width / 2, canvas.height / 2);
+        // retry:
+        ctx.font = "30px pixelfont";
+        ctx.fontFamily = "pixelfont";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("retry", canvas.width / 2, canvas.height / 1.75); //width=640, height=640
+        canvas.addEventListener('click', checkClick, false);
     }
+}
+
+function checkClick(e){
+    let mousePos = getMousePos(e);
+
+    if (mousePos.x >= 284 && mousePos.x <= 352 &&
+        mousePos.y >= 348 && mousePos.y <= 372) {
+
+        location.reload();
+    }
+}
+
+function getMousePos(e){
+    let r = canvas.getBoundingClientRect();
+    return {
+        x: e.clientX - r.left,
+        y: e.clientY - r.top
+    };
 }
 
 function isGameWon(){
