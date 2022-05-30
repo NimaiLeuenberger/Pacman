@@ -7,11 +7,9 @@ const tileMap = new TileMap(tileSize);
 let pacman = tileMap.getPacman();
 const ghosts = tileMap.getGhost();
 const pointsHTMLElement = document.getElementById("points");
+let points = 0;
 const pacLivesHTMLElement = document.getElementById("pacLives");
 let pacLives = 2;
-const retryBtn = document.getElementById("retryBtn");
-retryBtn.style.display = "none";
-let retry = false;
 
 function game(){
     tileMap.draw(ctx);
@@ -41,7 +39,9 @@ function pacmanHasNoLives(){
         } else {
             pacLives--;
             tileMap.map[15][10] = 4;
+            points = pacman.pointsCntr;
             pacman = tileMap.getPacman();
+            pacman.pointsCntr = points;
             pacLivesHTMLElement.innerHTML = pacLives.toString();
             return false;
         }
