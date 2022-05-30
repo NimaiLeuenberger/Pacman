@@ -13,11 +13,24 @@ h1{
     color: white;
 }
 
-h2{
+#points{
     text-align: center;
     font-family: pixelfont;
     font-size: 30px;
     color: white;
+}
+
+#pacLives{
+    font-family: pacfont;
+    font-size: 20px;
+    color: white;
+    margin-top: 35px;
+}
+
+#infos{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 @font-face {

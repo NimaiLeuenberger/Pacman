@@ -4,14 +4,17 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext('2d');
 const tileSize = 32;
 const tileMap = new TileMap(tileSize);
-const pacman = tileMap.getPacman();
+let pacman = tileMap.getPacman();
 const ghosts = tileMap.getGhost();
-const points = document.getElementById("points");
+const pointsHTMLElement = document.getElementById("points");
+const pacLivesHTMLElement = document.getElementById("pacLives");
 let pacLives = 2;
 
 function game(){
     tileMap.draw(ctx);
-    pacman.draw(ctx, pause(), ghosts, points);
+    if (!pacmanHasNoLives()){
+        pacman.draw(ctx, pause(), ghosts, pointsHTMLElement);
+    }
     ghosts.forEach((ghost) => ghost.draw(ctx, pause(), pacman));
     isGameOver();
     isGameWon();
@@ -32,9 +35,9 @@ function pacmanHasNoLives(){
             return true;
         } else {
             pacLives--;
-            //tileMap.map[pacman.column / tileSize][pacman.row / tileSize] = 2;
-            tileMap.map[10][15] = 4;
-            console.log("collided");
+            tileMap.map[15][10] = 4;
+            pacman = tileMap.getPacman();
+            pacLivesHTMLElement.innerHTML = pacLives.toString();
             return false;
         }
     } else {
