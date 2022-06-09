@@ -4,6 +4,7 @@ body{
     justify-content: center;
     align-items: center;
     background-color: #343434;
+    overflow: hidden;
 }
 
 #board{
