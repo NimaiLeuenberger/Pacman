@@ -44,6 +44,8 @@ export default class Pacman{
         this.pointsCntr = 0;
 
         this.eatingGhost = false;
+
+        this.collideGhost = null;
     }
 
     draw(ctx, pause, ghosts, points){
@@ -172,7 +174,7 @@ export default class Pacman{
         if (isInteger === true){
             isInteger = false;
             const tile = this.tileMap[rowCopy][columnCopy];
-            return tile === 1;
+            return tile === 1 || tile === 9;
         }
     }
 
@@ -185,25 +187,22 @@ export default class Pacman{
         this.pinkDotTimer = setTimeout(() => {
             this.pinkDotActive = false;
             this.pinkDotSoonInactive = false;
-            console.log(this.pinkDotSoonInactive);
         }, 12000);
         this.pinkDotTimer = setTimeout(() => {
             this.pinkDotSoonInactive = true;
-            console.log(this.pinkDotSoonInactive);
         }, 9000);
-        console.log(this.pinkDotSoonInactive);
     }
 
     eatGhost(ghosts){
         if (this.pinkDotActive){
             // it filters the array "ghosts" and saves the ghost that collided with pacman in the const
             const collideGhosts = ghosts.filter((ghost) => ghost.collideWith(this));
-            collideGhosts.forEach((ghost) => ghosts.splice(ghosts.indexOf(ghost), 1));
+            this.collideGhost = collideGhosts;
             collideGhosts.forEach((ghost) => {
                 if (ghost != null){
                     this.pointsCntr += 200;
                     this.eatingGhost = true;
-                    this.eatingGhostTimer = setTimeout(() => {this.eatingGhost = false}, 1000);
+                    this.eatingGhostTimer = setTimeout(() => {this.eatingGhost = false}, 500);
                 }
             });
         }

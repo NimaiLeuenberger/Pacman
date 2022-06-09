@@ -5,27 +5,39 @@ const ctx = canvas.getContext('2d');
 const tileSize = 32;
 const tileMap = new TileMap(tileSize);
 let pacman = tileMap.getPacman();
-const ghosts = tileMap.getGhost();
+let ghosts = tileMap.getGhost();
 const pointsHTMLElement = document.getElementById("points");
 let points = 0;
 const pacLivesHTMLElement = document.getElementById("pacLives");
 let pacLives = 2;
+let ghostRespawnTimeout = false;
+let eatenGhost = ghosts[0];
 
 function game(){
     tileMap.draw(ctx);
     if (!pacmanHasNoLives()){
         pacman.draw(ctx, pause(), ghosts, pointsHTMLElement);
     }
-    ghosts.forEach((ghost) => ghost.draw(ctx, pause(), pacman));
+    ghosts.forEach(function (ghost) {
+        if (ghost.ghostNumber === eatenGhost.ghostNumber){
+            ghost.draw(ctx, pauseGhost(), pacman);
+        } else {
+            ghost.draw(ctx, pause(), pacman);
+        }
+    });
     isGameOver();
     isGameWon();
-    if (!retry) {
-        drawGameOver();
-    }
+    drawGameOver();
+    eatGhost();
+    console.log(tileMap.map[ghosts[0].originalPos.row][ghosts[0].originalPos.column]);
 }
 
 function pause(){
     return isGameOver() === true || pacman.eatingGhost === true;
+}
+
+function pauseGhost(){
+    return isGameOver() === true || pacman.eatingGhost === true || ghostRespawnTimeout === true;
 }
 
 function isGameOver(){
@@ -45,8 +57,6 @@ function pacmanHasNoLives(){
             pacLivesHTMLElement.innerHTML = pacLives.toString();
             return false;
         }
-    } else {
-        return false;
     }
 }
 
@@ -111,6 +121,21 @@ function isGameWon(){
         ctx.textAlign = "center";
         ctx.fillText("Game Won!", canvas.width / 2, canvas.height / 2);
         return true;
+    }
+}
+
+function eatGhost(){
+    if (pacman.eatingGhost){
+        const collideGhosts = ghosts.filter(function (ghost) {
+            ghost.collideWith(pacman);
+            if (ghost.collideWith(pacman)) {
+                tileMap.map[ghost.originalPos.row][ghost.originalPos.column] = ghost.ghostNumber+5;
+                ghosts[ghost.ghostNumber] = tileMap.getGhost()[ghost.ghostNumber];
+                ghostRespawnTimeout = true;
+                setTimeout(() => {ghostRespawnTimeout = false;}, 3000);
+                eatenGhost = ghost;
+            }
+        });
     }
 }
 
