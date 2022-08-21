@@ -52,7 +52,7 @@ function pacmanHasNoLives(){
             return true;
         } else {
             pacLives--;
-            tileMap.map[15][10] = 4;
+            tileMap.map[16][3] = 4;
             points = pacman.pointsCntr;
             pacman = tileMap.getPacman();
             pacman.pointsCntr = points;
