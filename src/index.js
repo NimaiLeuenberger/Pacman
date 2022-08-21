@@ -13,6 +13,8 @@ let pacLives = 2;
 let ghostRespawnTimeout = false;
 let eatenGhost = ghosts[0];
 
+const retryBtn = document.getElementById("retry");
+
 function game(){
     tileMap.draw(ctx);
     if (!pacmanHasNoLives()){
@@ -33,11 +35,11 @@ function game(){
 }
 
 function pause(){
-    return isGameOver() === true || pacman.eatingGhost === true;
+    return isGameOver() === true || pacman.eatingGhost === true || window.location.href.includes("edit.html") === true;
 }
 
 function pauseGhost(){
-    return isGameOver() === true || pacman.eatingGhost === true || ghostRespawnTimeout === true;
+    return isGameOver() === true || pacman.eatingGhost === true || ghostRespawnTimeout === true || window.location.href.includes("edit.html") === true;
 }
 
 function isGameOver(){
@@ -120,6 +122,13 @@ function isGameWon(){
         ctx.fillStyle = "yellow";
         ctx.textAlign = "center";
         ctx.fillText("Game Won!", canvas.width / 2, canvas.height / 2);
+        // retry:
+        ctx.font = "30px pixelfont";
+        ctx.fontFamily = "pixelfont";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("retry", canvas.width / 2, canvas.height / 1.75); //width=640, height=640
+        canvas.addEventListener('click', checkClick, false);
         return true;
     }
 }
@@ -142,3 +151,42 @@ function eatGhost(){
 tileMap.setCanvasSize(canvas);
 // calling the game function 75 times per second (1000 ms)
 setInterval(game, 1000 / 100);
+
+retryBtn.onclick = function (){
+    location.reload();
+}
+
+
+import SelectionArea from "https://cdn.jsdelivr.net/npm/@viselect/vanilla/lib/viselect.esm.js";
+const app = document.querySelector<HTMLDivElement>(".container");
+for (let i = 0; i < 20; i++) {
+    app?.appendChild(document.createElement("div"));
+}
+
+const selection = new SelectionArea({
+    selectables: [".container > div"],
+    boundaries: [".container"]
+})
+    .on("start", ({ store, event }) => {
+            for (const el of store.stored) {
+                el.classList.remove("selected");
+            }
+            selection.clearSelection();
+    })
+    .on(
+        "move",
+        ({
+             store: {
+                 changed: { added, removed }
+             }
+         }) => {
+            for (const el of added) {
+                el.classList.add("selected");
+            }
+
+            for (const el of removed) {
+                el.classList.remove("selected");
+            }
+        }
+    )
+    .on("stop", ({ store: { stored } }) => console.log(stored.length));

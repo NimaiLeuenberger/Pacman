@@ -1,5 +1,6 @@
 import Pacman from "./Pacman.js";
 import Ghost from "./Ghost.js";
+import JSONMap from "../json/map.json" assert {type : "json"};
 
 export default class TileMap {
     constructor(tileSize) {
@@ -10,6 +11,9 @@ export default class TileMap {
 
         this.pinkDot = new Image();
         this.pinkDot.src = "../images/pinkDot.png";
+        this.pinkDot.onclick = function (){
+            console.log("img clicked");
+        }
 
         this.wall = new Image();
         this.wall.src = "../images/wall.png";
@@ -29,9 +33,12 @@ export default class TileMap {
             left: 2,
             right: 3
         };
+
+        console.log(JSONMap);
     }
 
-    map = [
+
+    map = JSONMap/*[
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 3, 3, 1, 3, 3, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1],
         [1, 3, 3, 1, 3, 3, 3, 1, 9, 9, 1, 3, 3, 3, 1, 1, 1, 3, 3, 1],
@@ -52,7 +59,7 @@ export default class TileMap {
         [1, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 1],
         [1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    ];
+    ]*/;
 
     draw(ctx) {
         for (let row = 0; row < this.map.length; row++) {
